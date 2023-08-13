@@ -10,6 +10,7 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Getter
@@ -18,9 +19,10 @@ import java.util.List;
 @AllArgsConstructor
 public class Cliente extends ModeloGenerico {
 
+    @Column(unique = true)
+    private UUID accountId;
     private String nome;
-    private String email;
-    private String senha; //TODO este atributo ficará aqui?
+    private String accountEmail;
     private String telefone;
     private LocalDate dataNascimento;
     private GeneroEnum genero;
@@ -40,4 +42,11 @@ public class Cliente extends ModeloGenerico {
 
     @OneToMany(mappedBy = "cliente")
     private List<Pedido> pedidos = new ArrayList<>();
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "endereco_residencial_id")
+    private Endereco enderecoResidencial;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cliente")
+    private List<Endereco> enderecosDeEntrega = new ArrayList<>();
 }
