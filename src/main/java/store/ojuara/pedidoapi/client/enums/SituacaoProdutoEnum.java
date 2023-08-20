@@ -1,4 +1,4 @@
-package store.ojuara.pedidoapi.domain.enums;
+package store.ojuara.pedidoapi.client.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

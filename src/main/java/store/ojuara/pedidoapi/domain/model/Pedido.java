@@ -33,9 +33,9 @@ public class Pedido extends ModeloGenerico{
     @JoinColumn(name = "cliente_id")
     private Cliente cliente;
 
-    @ManyToMany
-    @JoinTable(name = "pedido_produto",
-            joinColumns = @JoinColumn(name = "pedido_id"),
-            inverseJoinColumns = @JoinColumn(name = "produto_id"))
-    private List<Produto> produtos = new ArrayList<>();
+    @ElementCollection
+    @CollectionTable(name = "pedido_produto",
+            joinColumns = @JoinColumn(name = "compra_id"))
+    @Column(name = "produto_api_id")
+    private List<Long> produtos = new ArrayList<>();
 }

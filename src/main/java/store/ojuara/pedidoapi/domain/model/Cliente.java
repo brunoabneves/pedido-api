@@ -23,22 +23,23 @@ public class Cliente extends ModeloGenerico {
     private UUID accountId;
     private String nome;
     private String accountEmail;
-    private String telefone;
+    private String accountPhone;
     private LocalDate dataNascimento;
     private GeneroEnum genero;
+    @Column(unique = true)
     private String cpfCnpj;
 
     @ManyToMany
     @JoinTable(name = "cliente_lista_desejos",
             joinColumns = @JoinColumn(name = "cliente_id"),
-            inverseJoinColumns = @JoinColumn(name = "produto_id"))
-    private List<Produto> listaDeDesejos = new ArrayList<>();
+            inverseJoinColumns = @JoinColumn(name = "produto_api_id"))
+    private List<Long> listaDeDesejos = new ArrayList<>();
 
     @ManyToMany
     @JoinTable(name = "cliente_carrinho_compras",
             joinColumns = @JoinColumn(name = "cliente_id"),
-            inverseJoinColumns = @JoinColumn(name = "produto_id"))
-    private List<Produto> carrinhoDeCompras = new ArrayList<>();
+            inverseJoinColumns = @JoinColumn(name = "produto_api_id"))
+    private List<Long> carrinhoDeCompras = new ArrayList<>();
 
     @OneToMany(mappedBy = "cliente")
     private List<Pedido> pedidos = new ArrayList<>();
