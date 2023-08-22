@@ -15,4 +15,5 @@ public interface ClienteService {
     Page<ClienteDTO> listar(Pageable paginacao);
     ClienteDTO cadastrar(ClienteForm form);
     ClienteDTO atualizar(Long id, ClienteUpdateForm updateForm);
+    void excluir(Long id);
 }

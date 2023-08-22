@@ -3,17 +3,22 @@ package store.ojuara.pedidoapi.service.cliente;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import store.ojuara.pedidoapi.domain.dto.ClienteDTO;
+import store.ojuara.pedidoapi.domain.enums.GeneroEnum;
 import store.ojuara.pedidoapi.domain.enums.SituacaoEnum;
 import store.ojuara.pedidoapi.domain.form.ClienteForm;
 import store.ojuara.pedidoapi.domain.form.ClienteUpdateForm;
 import store.ojuara.pedidoapi.domain.model.Cliente;
 import store.ojuara.pedidoapi.mapper.ClienteMapper;
 import store.ojuara.pedidoapi.repository.ClienteRepository;
+import store.ojuara.pedidoapi.repository.specification.ClienteSpecification;
 import store.ojuara.pedidoapi.service.validator.ClienteValidator;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Service
@@ -24,6 +29,7 @@ public class ClienteServiceImpl implements ClienteService{
     private final ClienteValidator validator;
     private final ClienteRepository repository;
     private final ClienteMapper mapper;
+    private final ClienteSpecification specification;
 
     @Override
     public ClienteDTO visualizar(Long id) {
@@ -56,6 +62,23 @@ public class ClienteServiceImpl implements ClienteService{
         mapper.updateClienteFromClienteUpdateForm(updateForm, cliente);
 
         return mapper.toDto(repository.save(cliente));
+    }
+
+    @Override
+    public void excluir(Long id) {
+        var cliente = validator.verificarExistencia(id);
+        repository.delete(cliente);
+    }
+
+    public Page<ClienteDTO> pesquisarComFiltrosSpecification(UUID accountId, String nome, String accountEmail,
+                                                             String accountPhone, LocalDate dataNascimento,GeneroEnum genero,
+                                                             String cpfCnpj, SituacaoEnum situacao, Pageable paginacao) {
+
+        Specification<Cliente> spec = specification.filtrar(accountId, nome, accountEmail, accountPhone,
+                dataNascimento, genero, cpfCnpj, situacao);
+        Page<Cliente> pageCamisa = repository.findAll(spec, paginacao);
+
+        return pageCamisa.map(this::toDTO);
     }
 
     private ClienteDTO toDTO(Cliente cliente) {

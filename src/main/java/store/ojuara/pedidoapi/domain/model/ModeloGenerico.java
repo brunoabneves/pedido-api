@@ -6,9 +6,11 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import store.ojuara.pedidoapi.domain.enums.SituacaoEnum;
 
-import javax.persistence.*;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -37,7 +39,4 @@ public class ModeloGenerico implements Serializable {
     private LocalDate updatedAt;
 
     private String updateReason;
-
-    @Enumerated(EnumType.STRING)
-    private SituacaoEnum situacao;
 }
