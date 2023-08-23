@@ -1,7 +1,7 @@
 package store.ojuara.pedidoapi.client.response;
 
 import lombok.Data;
-import store.ojuara.pedidoapi.client.enums.SituacaoProdutoEnum;
+import store.ojuara.pedidoapi.client.enums.SituacaoProduto;
 
 import java.math.BigDecimal;
 import java.util.UUID;
@@ -18,5 +18,5 @@ public class ProdutoResponse {
     private String material;
     private String imagemUrl;
     private UUID uuidProdutoApi;
-    private SituacaoProdutoEnum situacao;
+    private SituacaoProduto situacao;
 }
