@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum SituacaoEnum {
+public enum Situacao {
 
     ATIVO("Ativo"),
     CADASTRADO("Cadastrado"),

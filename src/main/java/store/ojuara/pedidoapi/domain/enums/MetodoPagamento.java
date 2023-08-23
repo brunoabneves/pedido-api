@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum MetodoPagamentoEnum {
+public enum MetodoPagamento {
 
     BOLETO("Boleto"),
     CARTAO_CREDITO("Cartão de Crédito"),

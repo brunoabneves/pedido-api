@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum GeneroEnum {
+public enum Genero {
 
     MASCULINO("Masculino"),
     FEMININO("Feminino"),

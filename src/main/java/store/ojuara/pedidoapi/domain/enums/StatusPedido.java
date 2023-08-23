@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum StatusPedidoEnum {
+public enum StatusPedido {
 
     CANCELADO("Cancelado"),
     EM_PROCESSAMENTO("Em processamento"),

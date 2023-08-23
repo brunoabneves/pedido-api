@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public enum TipoEnderecoEnum {
+public enum TipoEndereco {
 
     RESIDENCIAL("Residencial"),
     COMERCIAL("Comercial");
