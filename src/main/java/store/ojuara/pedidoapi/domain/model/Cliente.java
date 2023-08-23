@@ -4,8 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import store.ojuara.pedidoapi.domain.enums.GeneroEnum;
-import store.ojuara.pedidoapi.domain.enums.SituacaoEnum;
+import store.ojuara.pedidoapi.domain.enums.Genero;
+import store.ojuara.pedidoapi.domain.enums.Situacao;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -26,12 +26,12 @@ public class Cliente extends ModeloGenerico {
     private String accountEmail;
     private String accountPhone;
     private LocalDate dataNascimento;
-    private GeneroEnum genero;
+    private Genero genero;
     @Column(unique = true)
     private String cpfCnpj;
 
     @Enumerated(EnumType.STRING)
-    private SituacaoEnum situacao;
+    private Situacao situacao;
 
     @ManyToMany
     @JoinTable(name = "cliente_lista_desejos",

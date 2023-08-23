@@ -1,6 +1,6 @@
 package store.ojuara.pedidoapi.domain.form;
 
-import store.ojuara.pedidoapi.domain.enums.TipoEnderecoEnum;
+import store.ojuara.pedidoapi.domain.enums.TipoEndereco;
 
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -8,7 +8,7 @@ import javax.persistence.Enumerated;
 public class EnderecoForm {
 
     @Enumerated(EnumType.STRING)
-    private TipoEnderecoEnum tipoEndereco;
+    private TipoEndereco tipoEndereco;
     private String rua;
     private String cep;
     private String numero;

@@ -3,8 +3,8 @@ package store.ojuara.pedidoapi.repository.specification;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
-import store.ojuara.pedidoapi.domain.enums.GeneroEnum;
-import store.ojuara.pedidoapi.domain.enums.SituacaoEnum;
+import store.ojuara.pedidoapi.domain.enums.Genero;
+import store.ojuara.pedidoapi.domain.enums.Situacao;
 import store.ojuara.pedidoapi.domain.model.Cliente;
 import store.ojuara.pedidoapi.shared.utils.StringUtils;
 
@@ -18,7 +18,7 @@ public class ClienteSpecification {
 
     public Specification<Cliente> filtrar(UUID accountId, String nome, String accountEmail,
                                           String accountPhone, LocalDate dataNascimento,
-                                          GeneroEnum genero, String cpfCnpj, SituacaoEnum situacao) {
+                                          Genero genero, String cpfCnpj, Situacao situacao) {
 
         Specification<Cliente> spec = null;
         Specification<Cliente> temp = null;
@@ -85,7 +85,7 @@ public class ClienteSpecification {
                 criteriaBuilder.equal(root.get("dataNascimento"), dataNascimento);
     }
 
-    public Specification<Cliente> filterByGenero(GeneroEnum genero) {
+    public Specification<Cliente> filterByGenero(Genero genero) {
         return (root, query, criteriaBuilder) ->
                 criteriaBuilder.equal(root.get("genero"), genero);
     }
@@ -96,7 +96,7 @@ public class ClienteSpecification {
                 criteriaBuilder.like(root.get("cpfCnpj"), "%" + cpfCnpjFormatado + "%");
     }
 
-    public Specification<Cliente> filterBySituacao(SituacaoEnum situacao) {
+    public Specification<Cliente> filterBySituacao(Situacao situacao) {
         return (root, query, criteriaBuilder) ->
                 criteriaBuilder.like(root.get("situacao"), "%" + situacao + "%");
     }

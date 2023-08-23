@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import store.ojuara.pedidoapi.domain.enums.TipoEnderecoEnum;
+import store.ojuara.pedidoapi.domain.enums.TipoEndereco;
 
 import javax.persistence.*;
 
@@ -16,7 +16,7 @@ import javax.persistence.*;
 public class Endereco extends ModeloGenerico{
 
     @Enumerated(EnumType.STRING)
-    private TipoEnderecoEnum tipoEndereco;
+    private TipoEndereco tipoEndereco;
     private String rua;
     private String cep;
     private String numero;

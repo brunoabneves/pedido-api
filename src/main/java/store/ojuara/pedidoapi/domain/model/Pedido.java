@@ -4,8 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import store.ojuara.pedidoapi.domain.enums.MetodoPagamentoEnum;
-import store.ojuara.pedidoapi.domain.enums.StatusPedidoEnum;
+import store.ojuara.pedidoapi.domain.enums.MetodoPagamento;
+import store.ojuara.pedidoapi.domain.enums.StatusPedido;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -20,12 +20,12 @@ import java.util.List;
 public class Pedido extends ModeloGenerico{
 
     @Enumerated(EnumType.STRING)
-    private StatusPedidoEnum status;
+    private StatusPedido status;
 
     private BigDecimal valorTotal;
 
     @Enumerated(EnumType.STRING)
-    private MetodoPagamentoEnum metodoPagamento;
+    private MetodoPagamento metodoPagamento;
 
     private String observacoesCliente;
 

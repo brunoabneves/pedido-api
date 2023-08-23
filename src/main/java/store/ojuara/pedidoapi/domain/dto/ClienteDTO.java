@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import store.ojuara.pedidoapi.domain.enums.GeneroEnum;
+import store.ojuara.pedidoapi.domain.enums.Genero;
 
 import java.time.LocalDate;
 import java.util.UUID;
@@ -22,6 +22,6 @@ public class ClienteDTO {
     private String accountEmail;
     private String telefone;
     private LocalDate dataNascimento;
-    private GeneroEnum genero;
+    private Genero genero;
     private String cpfCnpj;
 }

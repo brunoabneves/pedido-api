@@ -7,8 +7,8 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import store.ojuara.pedidoapi.domain.dto.ClienteDTO;
-import store.ojuara.pedidoapi.domain.enums.GeneroEnum;
-import store.ojuara.pedidoapi.domain.enums.SituacaoEnum;
+import store.ojuara.pedidoapi.domain.enums.Genero;
+import store.ojuara.pedidoapi.domain.enums.Situacao;
 import store.ojuara.pedidoapi.domain.form.ClienteForm;
 import store.ojuara.pedidoapi.domain.form.ClienteUpdateForm;
 import store.ojuara.pedidoapi.domain.model.Cliente;
@@ -17,7 +17,6 @@ import store.ojuara.pedidoapi.repository.ClienteRepository;
 import store.ojuara.pedidoapi.repository.specification.ClienteSpecification;
 import store.ojuara.pedidoapi.service.validator.ClienteValidator;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.UUID;
 
@@ -51,7 +50,7 @@ public class ClienteServiceImpl implements ClienteService{
     @Override
     public ClienteDTO cadastrar(ClienteForm form) {
         var cliente = mapper.toModel(form);
-        cliente.setSituacao(SituacaoEnum.CADASTRADO);
+        cliente.setSituacao(Situacao.CADASTRADO);
 
         return mapper.toDto(repository.save(cliente));
     }
@@ -70,9 +69,10 @@ public class ClienteServiceImpl implements ClienteService{
         repository.delete(cliente);
     }
 
+    @Override
     public Page<ClienteDTO> pesquisarComFiltrosSpecification(UUID accountId, String nome, String accountEmail,
-                                                             String accountPhone, LocalDate dataNascimento,GeneroEnum genero,
-                                                             String cpfCnpj, SituacaoEnum situacao, Pageable paginacao) {
+                                                             String accountPhone, LocalDate dataNascimento, Genero genero,
+                                                             String cpfCnpj, Situacao situacao, Pageable paginacao) {
 
         Specification<Cliente> spec = specification.filtrar(accountId, nome, accountEmail, accountPhone,
                 dataNascimento, genero, cpfCnpj, situacao);
