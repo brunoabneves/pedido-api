@@ -32,7 +32,7 @@ public class ClienteController {
 
     @Operation(summary = "Visualizar um cliente.", description = "Busca um cliente pelo seu UUID.")
     @GetMapping("/{uuid}")
-    public ResponseEntity<ClienteDTO> visualizar(UUID uuid) {
+    public ResponseEntity<ClienteDTO> visualizar(@PathVariable UUID uuid) {
         return ResponseEntity.ok(service.visualizarPorUuid(uuid));
     }
 

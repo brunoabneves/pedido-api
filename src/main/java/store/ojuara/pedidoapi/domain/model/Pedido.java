@@ -35,7 +35,7 @@ public class Pedido extends ModeloGenerico{
 
     @ElementCollection
     @CollectionTable(name = "pedido_produto",
-            joinColumns = @JoinColumn(name = "compra_id"))
+            joinColumns = @JoinColumn(name = "pedido_id"))
     @Column(name = "produto_api_id")
-    private List<Long> produtos = new ArrayList<>();
+    private List<Long> idsProdutos = new ArrayList<>();
 }

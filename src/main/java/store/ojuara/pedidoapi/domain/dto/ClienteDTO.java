@@ -5,8 +5,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import store.ojuara.pedidoapi.domain.enums.Genero;
+import store.ojuara.pedidoapi.domain.model.Endereco;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -24,4 +26,8 @@ public class ClienteDTO {
     private LocalDate dataNascimento;
     private Genero genero;
     private String cpfCnpj;
+    private List<Long> listaDeDesejos;
+    private List<Long> carrinhoDeCompras;
+    private Endereco enderecoResidencial;
+    private List<Endereco> enderecosDeEntrega;
 }

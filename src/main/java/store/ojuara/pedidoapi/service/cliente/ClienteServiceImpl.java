@@ -16,6 +16,7 @@ import store.ojuara.pedidoapi.mapper.ClienteMapper;
 import store.ojuara.pedidoapi.repository.ClienteRepository;
 import store.ojuara.pedidoapi.repository.specification.ClienteSpecification;
 import store.ojuara.pedidoapi.service.validator.ClienteValidator;
+import store.ojuara.pedidoapi.shared.utils.StringUtils;
 
 import java.time.LocalDate;
 import java.util.UUID;
@@ -49,6 +50,8 @@ public class ClienteServiceImpl implements ClienteService{
 
     @Override
     public ClienteDTO cadastrar(ClienteForm form) {
+        String cpfCnpjFormatado = StringUtils.removerCaracteresEspeciais(form.getCpfCnpj());
+        form.setCpfCnpj(cpfCnpjFormatado);
         var cliente = mapper.toModel(form);
         cliente.setSituacao(Situacao.CADASTRADO);
 
