@@ -11,6 +11,7 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Getter
@@ -37,5 +38,5 @@ public class Pedido extends ModeloGenerico{
     @CollectionTable(name = "pedido_produto",
             joinColumns = @JoinColumn(name = "pedido_id"))
     @Column(name = "produto_api_id")
-    private List<Long> idsProdutos = new ArrayList<>();
+    private List<UUID> idsProdutos = new ArrayList<>();
 }
