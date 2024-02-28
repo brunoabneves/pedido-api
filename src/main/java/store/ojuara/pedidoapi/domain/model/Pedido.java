@@ -34,9 +34,6 @@ public class Pedido extends ModeloGenerico{
     @JoinColumn(name = "cliente_id")
     private Cliente cliente;
 
-    @ElementCollection
-    @CollectionTable(name = "pedido_produto",
-            joinColumns = @JoinColumn(name = "pedido_id"))
-    @Column(name = "produto_api_id")
-    private List<UUID> idsProdutos = new ArrayList<>();
+    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)
+    private List<ItemPedido> itens = new ArrayList<>();
 }

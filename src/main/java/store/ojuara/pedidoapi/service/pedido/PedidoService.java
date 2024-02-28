@@ -14,7 +14,7 @@ public interface PedidoService {
     PedidoDTO visualizar(Long id);
     PedidoDTO visualizarPorUuid(UUID uuid);
     Page<PedidoDTO> listar(Pageable paginacao);
-    PedidoDTO cadastrar(PedidoForm form, List<UUID> idsProdutos);
+    PedidoDTO criarPedido(PedidoForm form);
     PedidoDTO atualizar(Long id, PedidoUpdateForm updateForm);
     void excluir(Long id);
 }

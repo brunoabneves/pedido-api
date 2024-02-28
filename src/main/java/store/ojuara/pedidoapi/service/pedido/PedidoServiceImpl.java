@@ -9,14 +9,17 @@ import store.ojuara.pedidoapi.client.ProdutoClient;
 import store.ojuara.pedidoapi.client.response.ProdutoResponse;
 import store.ojuara.pedidoapi.domain.dto.PedidoDTO;
 import store.ojuara.pedidoapi.domain.enums.StatusPedido;
+import store.ojuara.pedidoapi.domain.form.ItemPedidoForm;
 import store.ojuara.pedidoapi.domain.form.PedidoForm;
 import store.ojuara.pedidoapi.domain.form.PedidoUpdateForm;
+import store.ojuara.pedidoapi.domain.model.ItemPedido;
 import store.ojuara.pedidoapi.domain.model.Pedido;
+import store.ojuara.pedidoapi.kafka.KafkaProducer;
 import store.ojuara.pedidoapi.mapper.PedidoMapper;
 import store.ojuara.pedidoapi.repository.PedidoRepository;
 import store.ojuara.pedidoapi.service.validator.PedidoValidator;
 
-import java.util.ArrayList;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -29,6 +32,7 @@ public class PedidoServiceImpl implements PedidoService{
     private final PedidoRepository repository;
     private final PedidoMapper mapper;
     private final ProdutoClient client;
+    private final KafkaProducer<List<ItemPedido>> kafkaProducer;
 
     @Override
     public PedidoDTO visualizar(Long id) {
@@ -49,10 +53,21 @@ public class PedidoServiceImpl implements PedidoService{
 
     /**TODO Implementar listagem por specification**/
 
+    @Transactional
     @Override
-    public PedidoDTO cadastrar(PedidoForm form, List<UUID> idsProdutos) {
-        var produtos = buscarProdutos(idsProdutos);
-        var pedido = mapearPedido(form, produtos);
+    public PedidoDTO criarPedido(PedidoForm form) {
+        var pedido = mapper.toModel(form);
+        var valorTotal = BigDecimal.ZERO;
+
+        for(ItemPedidoForm itemPedidoForm : form.getItens()){
+            var itemPedido = mapearItemPedido(itemPedidoForm);
+            valorTotal = valorTotal.add(itemPedido.getSubtotal());
+            pedido.getItens().add(itemPedido);
+        }
+
+        pedido.setValorTotal(valorTotal);
+        pedido.setStatus(StatusPedido.EM_PROCESSAMENTO);
+        kafkaProducer.send(pedido.getItens());
 
         return mapper.toDto(repository.save(pedido));
     }
@@ -75,22 +90,26 @@ public class PedidoServiceImpl implements PedidoService{
         return mapper.toDto(pedido);
     }
 
-    private List<ProdutoResponse> buscarProdutos(List<UUID> idsProdutos) {
-        List<ProdutoResponse> produtos = new ArrayList<>();
-        idsProdutos.forEach(uuid -> {
-            var produtoResponse = client.buscarProduto(uuid).getBody();
-            produtos.add(produtoResponse);
-        });
-
-        return produtos;
+    private ProdutoResponse buscarProduto(UUID uuidProduto) {
+        return client.buscarProduto(uuidProduto).getBody();
     }
 
-    private Pedido mapearPedido(PedidoForm form, List<ProdutoResponse> produtos) {
-        var pedido = mapper.toModel(form);
-        pedido.setStatus(StatusPedido.EM_PROCESSAMENTO);
-        for(ProdutoResponse produto : produtos){
-            pedido.getIdsProdutos().add(produto.getUuid());
-        }
-        return pedido;
+//    private Pedido mapearPedido(PedidoForm form, List<ProdutoResponse> produtos) {
+//        var pedido = mapper.toModel(form);
+//        pedido.setStatus(StatusPedido.EM_PROCESSAMENTO);
+//        produtos.forEach(p -> pedido.getIdsProdutos().add(p.getUuid()));
+//
+//        return pedido;
+//    }
+
+    private ItemPedido mapearItemPedido(ItemPedidoForm form) {
+        var produto = buscarProduto(form.getUuidProduto());
+        validator.validarQtdProduto(produto.getQuantidade(), form.getQuantidade());
+        var itemPedido = new ItemPedido();
+        itemPedido.setUuidProdutoExterno(produto.getUuid());
+        itemPedido.setQuantidade(form.getQuantidade());
+        itemPedido.setSubtotal(produto.getPrecoVenda().multiply(BigDecimal.valueOf(form.getQuantidade())));
+
+        return itemPedido;
     }
 }

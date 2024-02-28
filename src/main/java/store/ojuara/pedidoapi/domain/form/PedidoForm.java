@@ -19,4 +19,5 @@ public class PedidoForm {
     private MetodoPagamento metodoPagamento;
     private String observacoesCliente;
     private Long clienteId;
+    private List<ItemPedidoForm> itens;
 }
