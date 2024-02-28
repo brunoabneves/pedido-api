@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import store.ojuara.pedidoapi.client.ProdutoClient;
 import store.ojuara.pedidoapi.client.response.ProdutoResponse;
+import store.ojuara.pedidoapi.domain.dto.ItemPedidoDTO;
 import store.ojuara.pedidoapi.domain.dto.PedidoDTO;
 import store.ojuara.pedidoapi.domain.enums.StatusPedido;
 import store.ojuara.pedidoapi.domain.form.ItemPedidoForm;
@@ -32,7 +33,7 @@ public class PedidoServiceImpl implements PedidoService{
     private final PedidoRepository repository;
     private final PedidoMapper mapper;
     private final ProdutoClient client;
-    private final KafkaProducer<List<ItemPedido>> kafkaProducer;
+    private final KafkaProducer<List<ItemPedidoDTO>> kafkaProducer;
 
     @Override
     public PedidoDTO visualizar(Long id) {
@@ -58,18 +59,17 @@ public class PedidoServiceImpl implements PedidoService{
     public PedidoDTO criarPedido(PedidoForm form) {
         var pedido = mapper.toModel(form);
         var valorTotal = BigDecimal.ZERO;
-
         for(ItemPedidoForm itemPedidoForm : form.getItens()){
             var itemPedido = mapearItemPedido(itemPedidoForm);
             valorTotal = valorTotal.add(itemPedido.getSubtotal());
             pedido.getItens().add(itemPedido);
         }
-
         pedido.setValorTotal(valorTotal);
         pedido.setStatus(StatusPedido.EM_PROCESSAMENTO);
-        kafkaProducer.send(pedido.getItens());
+        var pedidoDTO = mapper.toDto(repository.save(pedido));
+        kafkaProducer.send(pedidoDTO.getItens());
 
-        return mapper.toDto(repository.save(pedido));
+        return pedidoDTO;
     }
 
     @Override
@@ -93,14 +93,6 @@ public class PedidoServiceImpl implements PedidoService{
     private ProdutoResponse buscarProduto(UUID uuidProduto) {
         return client.buscarProduto(uuidProduto).getBody();
     }
-
-//    private Pedido mapearPedido(PedidoForm form, List<ProdutoResponse> produtos) {
-//        var pedido = mapper.toModel(form);
-//        pedido.setStatus(StatusPedido.EM_PROCESSAMENTO);
-//        produtos.forEach(p -> pedido.getIdsProdutos().add(p.getUuid()));
-//
-//        return pedido;
-//    }
 
     private ItemPedido mapearItemPedido(ItemPedidoForm form) {
         var produto = buscarProduto(form.getUuidProduto());
