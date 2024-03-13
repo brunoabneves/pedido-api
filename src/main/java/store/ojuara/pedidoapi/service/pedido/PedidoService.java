@@ -6,6 +6,7 @@ import store.ojuara.pedidoapi.domain.dto.PedidoDTO;
 import store.ojuara.pedidoapi.domain.form.PedidoForm;
 import store.ojuara.pedidoapi.domain.form.PedidoUpdateForm;
 
+import java.util.List;
 import java.util.UUID;
 
 public interface PedidoService {
@@ -13,7 +14,7 @@ public interface PedidoService {
     PedidoDTO visualizar(Long id);
     PedidoDTO visualizarPorUuid(UUID uuid);
     Page<PedidoDTO> listar(Pageable paginacao);
-    PedidoDTO cadastrar(PedidoForm form);
+    PedidoDTO criarPedido(PedidoForm form);
     PedidoDTO atualizar(Long id, PedidoUpdateForm updateForm);
     void excluir(Long id);
 }

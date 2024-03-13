@@ -5,8 +5,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import store.ojuara.pedidoapi.domain.model.Pedido;
 import store.ojuara.pedidoapi.repository.PedidoRepository;
+import store.ojuara.pedidoapi.shared.exception.RegraDeNegocioException;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.Objects;
 import java.util.UUID;
 
 @Service
@@ -23,5 +25,11 @@ public class PedidoValidator {
     @Transactional(readOnly = true)
     public Pedido verificarExistencia(UUID uuid) {
         return repository.findByUuid(uuid).orElseThrow(() -> new EntityNotFoundException("Nenhum pedido encontrado para o uuid informado."));
+    }
+
+    public void validarQtdProduto(Integer qtdProdutoApi, Integer qtdProdutoPedido ) {
+        if(qtdProdutoPedido > qtdProdutoApi) {
+            throw new RegraDeNegocioException("Quantidade insuficiente");
+        }
     }
 }
