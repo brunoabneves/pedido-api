@@ -15,7 +15,6 @@ import store.ojuara.pedidoapi.domain.form.PedidoForm;
 import store.ojuara.pedidoapi.domain.form.PedidoUpdateForm;
 import store.ojuara.pedidoapi.domain.model.ItemPedido;
 import store.ojuara.pedidoapi.domain.model.Pedido;
-import store.ojuara.pedidoapi.kafka.KafkaProducer;
 import store.ojuara.pedidoapi.mapper.PedidoMapper;
 import store.ojuara.pedidoapi.repository.PedidoRepository;
 import store.ojuara.pedidoapi.service.validator.PedidoValidator;

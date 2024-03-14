@@ -15,7 +15,7 @@ import java.util.UUID;
 public class ItemPedidoDTO {
 
     private Long idPedido;
-    private UUID uuidProdutoExterno;
+    private UUID uuidProduto;
     private int quantidade;
     private BigDecimal subtotal;
 }
