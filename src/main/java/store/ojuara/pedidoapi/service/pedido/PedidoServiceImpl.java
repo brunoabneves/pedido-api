@@ -1,6 +1,8 @@
 package store.ojuara.pedidoapi.service.pedido;
 
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -15,12 +17,16 @@ import store.ojuara.pedidoapi.domain.form.PedidoForm;
 import store.ojuara.pedidoapi.domain.form.PedidoUpdateForm;
 import store.ojuara.pedidoapi.domain.model.ItemPedido;
 import store.ojuara.pedidoapi.domain.model.Pedido;
-import store.ojuara.pedidoapi.kafka.KafkaProducer;
+import store.ojuara.pedidoapi.kafka.PedidoProducerImpl;
+import store.ojuara.pedidoapi.mapper.ItemPedidoMapper;
 import store.ojuara.pedidoapi.mapper.PedidoMapper;
+import store.ojuara.pedidoapi.repository.ItemPedidoRepository;
 import store.ojuara.pedidoapi.repository.PedidoRepository;
 import store.ojuara.pedidoapi.service.validator.PedidoValidator;
+import store.ojuara.pedidoapi.shared.exception.PedidoException;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -33,7 +39,11 @@ public class PedidoServiceImpl implements PedidoService{
     private final PedidoRepository repository;
     private final PedidoMapper mapper;
     private final ProdutoClient client;
-    private final KafkaProducer<List<ItemPedidoDTO>> kafkaProducer;
+    private final PedidoProducerImpl pedidoProducer;
+    private final ItemPedidoMapper itemPedidoMapper;
+    private final ItemPedidoRepository itemPedidoRepository;
+
+    private static final Logger logger = LoggerFactory.getLogger(PedidoServiceImpl.class);
 
     @Override
     public PedidoDTO visualizar(Long id) {
@@ -54,22 +64,67 @@ public class PedidoServiceImpl implements PedidoService{
 
     /**TODO Implementar listagem por specification**/
 
+//    @Transactional
+//    @Override
+//    public PedidoDTO criarPedido(PedidoForm form) {
+//        try {
+//            var pedido = mapper.toModel(form);
+//            var valorTotal = BigDecimal.ZERO;
+//            List<ItemPedidoDTO> itensPedidoDTO = new ArrayList<>();
+//
+//            pedido.setValorTotal(valorTotal);
+//            pedido.setStatus(StatusPedido.EM_PROCESSAMENTO);
+//            var pedidoSalvo = repository.save(pedido);
+//
+//            for (ItemPedidoForm itemPedidoForm : form.getItens()) {
+//                var itemPedido = mapearItemPedido(itemPedidoForm);
+//                valorTotal = valorTotal.add(itemPedido.getSubtotal());
+//                itemPedido.setPedido(pedidoSalvo);
+//                itensPedidoDTO.add(itemPedidoMapper.toDto(itemPedido));
+//                itemPedidoRepository.save(itemPedido);
+//            }
+//            var pedidoDTO = mapper.toDto(pedidoSalvo);
+//            pedidoDTO.getItens().addAll(itensPedidoDTO);
+//            pedidoProducer.send(pedidoDTO.getItens());
+//
+//            return pedidoDTO;
+//        } catch(Exception e) {
+//            logger.error("Erro ao criar pedido: {}", e.getMessage());
+//            throw new PedidoException("Erro ao criar pedido");
+//        }
+//    }
+
     @Transactional
     @Override
     public PedidoDTO criarPedido(PedidoForm form) {
-        var pedido = mapper.toModel(form);
-        var valorTotal = BigDecimal.ZERO;
-        for(ItemPedidoForm itemPedidoForm : form.getItens()){
-            var itemPedido = mapearItemPedido(itemPedidoForm);
-            valorTotal = valorTotal.add(itemPedido.getSubtotal());
-            pedido.getItens().add(itemPedido);
-        }
-        pedido.setValorTotal(valorTotal);
-        pedido.setStatus(StatusPedido.EM_PROCESSAMENTO);
-        var pedidoDTO = mapper.toDto(repository.save(pedido));
-        kafkaProducer.send(pedidoDTO.getItens());
+        try {
+            var pedido = mapper.toModel(form);
+            var pedidoSalvo = repository.save(pedido);
+            var valorTotal = BigDecimal.ZERO;
+            List<ItemPedidoDTO> itensPedidoDTO = new ArrayList<>();
+            List<ItemPedido> itensPedido = new ArrayList<>();
 
-        return pedidoDTO;
+            for(ItemPedidoForm itemForm : form.getItens()) {
+                var itemPedido = mapearItemPedido(itemForm);
+                valorTotal = valorTotal.add(itemPedido.getSubtotal());
+                itemPedido.setPedido(pedidoSalvo);
+                itensPedidoDTO.add(itemPedidoMapper.toDto(itemPedido));
+                itensPedido.add(itemPedido);
+                //itensPedidoDTO.add(itemPedidoMapper.toDto(itemPedidoRepository.save(itemPedido)));
+            }
+
+            pedidoSalvo.setValorTotal(valorTotal);
+            pedidoSalvo.setStatus(StatusPedido.EM_PROCESSAMENTO);
+            pedidoSalvo.setItens(itensPedido);
+            var pedidoDTO = mapper.toDto(repository.save(pedidoSalvo));
+            pedidoDTO.setItens(itensPedidoDTO);
+            itensPedidoDTO.forEach(pedidoProducer::send);
+
+            return pedidoDTO;
+        } catch(Exception e) {
+            logger.error("Erro ao criar pedido: {}", e.getMessage());
+            throw new PedidoException("Erro ao criar pedido");
+        }
     }
 
     @Override
@@ -97,9 +152,7 @@ public class PedidoServiceImpl implements PedidoService{
     private ItemPedido mapearItemPedido(ItemPedidoForm form) {
         var produto = buscarProduto(form.getUuidProduto());
         validator.validarQtdProduto(produto.getQuantidade(), form.getQuantidade());
-        var itemPedido = new ItemPedido();
-        itemPedido.setUuidProdutoExterno(produto.getUuid());
-        itemPedido.setQuantidade(form.getQuantidade());
+        var itemPedido = itemPedidoMapper.toModel(form);
         itemPedido.setSubtotal(produto.getPrecoVenda().multiply(BigDecimal.valueOf(form.getQuantidade())));
 
         return itemPedido;

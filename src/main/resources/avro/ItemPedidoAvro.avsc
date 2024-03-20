@@ -1,0 +1,27 @@
+{
+  "type":"record",
+  "name":"ItemPedidoAvro",
+  "namespace":"store.ojuara.avro.pedidorealizado",
+  "fields": [
+    {
+      "name":"idPedido",
+      "type":"int",
+      "default": -1
+    },
+    {
+      "name":"uuidProduto",
+      "type":"string",
+      "default": ""
+    },
+    {
+      "name":"quantidade",
+      "type":"int",
+      "default": -1
+    },
+    {
+      "name":"subtotal",
+      "type":"string",
+      "default": ""
+    }
+  ]
+}

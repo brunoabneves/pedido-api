@@ -21,7 +21,7 @@ public class ItemPedido  extends ModeloGenerico {
     @ManyToOne
     @JoinColumn(name = "pedido_id")
     private Pedido pedido;
-    private UUID uuidProdutoExterno;
+    private UUID uuidProduto;
     private int quantidade;
     private BigDecimal subtotal;
 }
