@@ -16,6 +16,10 @@ public interface PedidoMapper extends EntityMapper<PedidoDTO, Pedido, PedidoForm
     void updatePedidoFromPedidoUpdateForm(PedidoUpdateForm pedidoUpdateForm, @MappingTarget Pedido pedido);
     PedidoForm toForm(Pedido entity);
     Pedido toModel(PedidoForm form);
+    @Mappings({
+            @Mapping(target = "itens", ignore = true)
+    })
+    PedidoDTO toDto(Pedido entity);
     List<Pedido> toModel(List<PedidoForm> formList);
     List<Pedido> toModel(Set<PedidoForm> formSet);
 

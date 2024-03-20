@@ -12,5 +12,5 @@ import java.util.UUID;
 public interface ProdutoClient {
 
     @RequestMapping("/produtos/{uuid}")
-    ResponseEntity<ProdutoResponse> buscarProduto(@PathVariable("uuid") UUID uuid);
+    ResponseEntity<ProdutoResponse> buscarProduto(@PathVariable UUID uuid);
 }

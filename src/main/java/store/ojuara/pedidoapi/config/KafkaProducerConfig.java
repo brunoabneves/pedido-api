@@ -1,5 +1,6 @@
 package store.ojuara.pedidoapi.config;
 
+import io.confluent.kafka.serializers.KafkaAvroDeserializerConfig;
 import io.confluent.kafka.serializers.KafkaAvroSerializer;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.producer.ProducerConfig;
@@ -13,7 +14,6 @@ import org.springframework.kafka.core.ProducerFactory;
 import store.ojuara.avro.pedidorealizado.ItemPedidoAvro;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Configuration
@@ -34,11 +34,12 @@ public class KafkaProducerConfig {
     }
 
     @Bean
-    public ProducerFactory<String, List<ItemPedidoAvro>> producerFactory() {
+    public ProducerFactory<String, ItemPedidoAvro> producerFactory() {
         Map<String, Object> configProps = new HashMap<>();
         configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
-        configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-        configProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, KafkaAvroSerializer.class);
+        configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
+        configProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, KafkaAvroSerializer.class.getName());
+        configProps.put(KafkaAvroDeserializerConfig.SPECIFIC_AVRO_READER_CONFIG, "true");
 
         configProps.put("schema.registry.url",schemaUrl);
 
@@ -46,7 +47,7 @@ public class KafkaProducerConfig {
     }
 
     @Bean
-    public KafkaTemplate<String, List<ItemPedidoAvro>> kafkaTemplate() {
+    public KafkaTemplate<String, ItemPedidoAvro> kafkaTemplate() {
         return new KafkaTemplate<>(producerFactory());
     }
 }

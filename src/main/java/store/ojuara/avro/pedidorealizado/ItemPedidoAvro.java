@@ -17,7 +17,7 @@ public class ItemPedidoAvro extends org.apache.avro.specific.SpecificRecordBase 
   private static final long serialVersionUID = -6900093091983093925L;
 
 
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"ItemPedidoAvro\",\"namespace\":\"store.ojuara.avro.pedidorealizado\",\"fields\":[{\"name\":\"idPedido\",\"type\":\"int\"},{\"name\":\"uuidProduto\",\"type\":{\"type\":\"string\",\"logicalType\":\"UUID\"}},{\"name\":\"quantidade\",\"type\":\"int\"},{\"name\":\"subtotal\",\"type\":{\"type\":\"string\",\"java-class\":\"java.math.BigDecimal\",\"logicalType\":\"decimal\",\"precision\":7,\"scale\":2}}]}");
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"ItemPedidoAvro\",\"namespace\":\"store.ojuara.avro.pedidorealizado\",\"fields\":[{\"name\":\"idPedido\",\"type\":\"int\",\"default\":-1},{\"name\":\"uuidProduto\",\"type\":\"string\",\"default\":\"\"},{\"name\":\"quantidade\",\"type\":\"int\",\"default\":-1},{\"name\":\"subtotal\",\"type\":\"string\",\"default\":\"\"}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
   private static final SpecificData MODEL$ = new SpecificData();
@@ -76,7 +76,7 @@ public class ItemPedidoAvro extends org.apache.avro.specific.SpecificRecordBase 
   private int idPedido;
   private java.lang.CharSequence uuidProduto;
   private int quantidade;
-  private java.math.BigDecimal subtotal;
+  private java.lang.CharSequence subtotal;
 
   /**
    * Default constructor.  Note that this does not initialize fields
@@ -92,7 +92,7 @@ public class ItemPedidoAvro extends org.apache.avro.specific.SpecificRecordBase 
    * @param quantidade The new value for quantidade
    * @param subtotal The new value for subtotal
    */
-  public ItemPedidoAvro(java.lang.Integer idPedido, java.lang.CharSequence uuidProduto, java.lang.Integer quantidade, java.math.BigDecimal subtotal) {
+  public ItemPedidoAvro(java.lang.Integer idPedido, java.lang.CharSequence uuidProduto, java.lang.Integer quantidade, java.lang.CharSequence subtotal) {
     this.idPedido = idPedido;
     this.uuidProduto = uuidProduto;
     this.quantidade = quantidade;
@@ -119,7 +119,7 @@ public class ItemPedidoAvro extends org.apache.avro.specific.SpecificRecordBase 
     case 0: idPedido = (java.lang.Integer)value$; break;
     case 1: uuidProduto = (java.lang.CharSequence)value$; break;
     case 2: quantidade = (java.lang.Integer)value$; break;
-    case 3: subtotal = (java.math.BigDecimal)value$; break;
+    case 3: subtotal = (java.lang.CharSequence)value$; break;
     default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
   }
@@ -179,7 +179,7 @@ public class ItemPedidoAvro extends org.apache.avro.specific.SpecificRecordBase 
    * Gets the value of the 'subtotal' field.
    * @return The value of the 'subtotal' field.
    */
-  public java.math.BigDecimal getSubtotal() {
+  public java.lang.CharSequence getSubtotal() {
     return subtotal;
   }
 
@@ -188,7 +188,7 @@ public class ItemPedidoAvro extends org.apache.avro.specific.SpecificRecordBase 
    * Sets the value of the 'subtotal' field.
    * @param value the value to set.
    */
-  public void setSubtotal(java.math.BigDecimal value) {
+  public void setSubtotal(java.lang.CharSequence value) {
     this.subtotal = value;
   }
 
@@ -236,7 +236,7 @@ public class ItemPedidoAvro extends org.apache.avro.specific.SpecificRecordBase 
     private int idPedido;
     private java.lang.CharSequence uuidProduto;
     private int quantidade;
-    private java.math.BigDecimal subtotal;
+    private java.lang.CharSequence subtotal;
 
     /** Creates a new Builder */
     private Builder() {
@@ -413,7 +413,7 @@ public class ItemPedidoAvro extends org.apache.avro.specific.SpecificRecordBase 
       * Gets the value of the 'subtotal' field.
       * @return The value.
       */
-    public java.math.BigDecimal getSubtotal() {
+    public java.lang.CharSequence getSubtotal() {
       return subtotal;
     }
 
@@ -423,7 +423,7 @@ public class ItemPedidoAvro extends org.apache.avro.specific.SpecificRecordBase 
       * @param value The value of 'subtotal'.
       * @return This builder.
       */
-    public store.ojuara.avro.pedidorealizado.ItemPedidoAvro.Builder setSubtotal(java.math.BigDecimal value) {
+    public store.ojuara.avro.pedidorealizado.ItemPedidoAvro.Builder setSubtotal(java.lang.CharSequence value) {
       validate(fields()[3], value);
       this.subtotal = value;
       fieldSetFlags()[3] = true;
@@ -457,7 +457,7 @@ public class ItemPedidoAvro extends org.apache.avro.specific.SpecificRecordBase 
         record.idPedido = fieldSetFlags()[0] ? this.idPedido : (java.lang.Integer) defaultValue(fields()[0]);
         record.uuidProduto = fieldSetFlags()[1] ? this.uuidProduto : (java.lang.CharSequence) defaultValue(fields()[1]);
         record.quantidade = fieldSetFlags()[2] ? this.quantidade : (java.lang.Integer) defaultValue(fields()[2]);
-        record.subtotal = fieldSetFlags()[3] ? this.subtotal : (java.math.BigDecimal) defaultValue(fields()[3]);
+        record.subtotal = fieldSetFlags()[3] ? this.subtotal : (java.lang.CharSequence) defaultValue(fields()[3]);
         return record;
       } catch (org.apache.avro.AvroMissingFieldException e) {
         throw e;
@@ -496,7 +496,7 @@ public class ItemPedidoAvro extends org.apache.avro.specific.SpecificRecordBase 
 
     out.writeInt(this.quantidade);
 
-    out.writeString(this.subtotal.toString());
+    out.writeString(this.subtotal);
 
   }
 
@@ -511,7 +511,7 @@ public class ItemPedidoAvro extends org.apache.avro.specific.SpecificRecordBase 
 
       this.quantidade = in.readInt();
 
-      this.subtotal = new java.math.BigDecimal(in.readString());
+      this.subtotal = in.readString(this.subtotal instanceof Utf8 ? (Utf8)this.subtotal : null);
 
     } else {
       for (int i = 0; i < 4; i++) {
@@ -529,7 +529,7 @@ public class ItemPedidoAvro extends org.apache.avro.specific.SpecificRecordBase 
           break;
 
         case 3:
-          this.subtotal = new java.math.BigDecimal(in.readString());
+          this.subtotal = in.readString(this.subtotal instanceof Utf8 ? (Utf8)this.subtotal : null);
           break;
 
         default:

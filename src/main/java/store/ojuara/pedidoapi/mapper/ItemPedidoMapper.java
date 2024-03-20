@@ -12,7 +12,7 @@ public interface ItemPedidoMapper extends EntityMapper<ItemPedidoDTO, ItemPedido
 
     @Mappings({
             @Mapping(target = "idPedido", source = "pedido.id"),
-            @Mapping(target = "uuidProduto", source = "uuidProdutoExterno")
+            @Mapping(target = "uuidProduto", source = "uuidProduto")
     })
     ItemPedidoDTO toDto(ItemPedido entity);
 }

@@ -5,28 +5,23 @@
   "fields": [
     {
       "name":"idPedido",
-      "type":"int"
+      "type":"int",
+      "default": -1
     },
     {
       "name":"uuidProduto",
-      "type":{
-        "logicalType":"UUID",
-        "type":"string"
-      }
+      "type":"string",
+      "default": ""
     },
     {
       "name":"quantidade",
-      "type":"int"
+      "type":"int",
+      "default": -1
     },
     {
       "name":"subtotal",
-      "type":{
-        "type":"string",
-        "java-class":"java.math.BigDecimal",
-        "logicalType":"decimal",
-        "precision":7,
-        "scale":2
-      }
+      "type":"string",
+      "default": ""
     }
   ]
 }

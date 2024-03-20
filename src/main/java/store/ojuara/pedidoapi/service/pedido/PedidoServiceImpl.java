@@ -64,28 +64,61 @@ public class PedidoServiceImpl implements PedidoService{
 
     /**TODO Implementar listagem por specification**/
 
+//    @Transactional
+//    @Override
+//    public PedidoDTO criarPedido(PedidoForm form) {
+//        try {
+//            var pedido = mapper.toModel(form);
+//            var valorTotal = BigDecimal.ZERO;
+//            List<ItemPedidoDTO> itensPedidoDTO = new ArrayList<>();
+//
+//            pedido.setValorTotal(valorTotal);
+//            pedido.setStatus(StatusPedido.EM_PROCESSAMENTO);
+//            var pedidoSalvo = repository.save(pedido);
+//
+//            for (ItemPedidoForm itemPedidoForm : form.getItens()) {
+//                var itemPedido = mapearItemPedido(itemPedidoForm);
+//                valorTotal = valorTotal.add(itemPedido.getSubtotal());
+//                itemPedido.setPedido(pedidoSalvo);
+//                itensPedidoDTO.add(itemPedidoMapper.toDto(itemPedido));
+//                itemPedidoRepository.save(itemPedido);
+//            }
+//            var pedidoDTO = mapper.toDto(pedidoSalvo);
+//            pedidoDTO.getItens().addAll(itensPedidoDTO);
+//            pedidoProducer.send(pedidoDTO.getItens());
+//
+//            return pedidoDTO;
+//        } catch(Exception e) {
+//            logger.error("Erro ao criar pedido: {}", e.getMessage());
+//            throw new PedidoException("Erro ao criar pedido");
+//        }
+//    }
+
     @Transactional
     @Override
     public PedidoDTO criarPedido(PedidoForm form) {
         try {
             var pedido = mapper.toModel(form);
+            var pedidoSalvo = repository.save(pedido);
             var valorTotal = BigDecimal.ZERO;
             List<ItemPedidoDTO> itensPedidoDTO = new ArrayList<>();
+            List<ItemPedido> itensPedido = new ArrayList<>();
 
-            pedido.setValorTotal(valorTotal);
-            pedido.setStatus(StatusPedido.EM_PROCESSAMENTO);
-            var pedidoSalvo = repository.save(pedido);
-
-            for (ItemPedidoForm itemPedidoForm : form.getItens()) {
-                var itemPedido = mapearItemPedido(itemPedidoForm);
+            for(ItemPedidoForm itemForm : form.getItens()) {
+                var itemPedido = mapearItemPedido(itemForm);
                 valorTotal = valorTotal.add(itemPedido.getSubtotal());
                 itemPedido.setPedido(pedidoSalvo);
                 itensPedidoDTO.add(itemPedidoMapper.toDto(itemPedido));
-                itemPedidoRepository.save(itemPedido);
+                itensPedido.add(itemPedido);
+                //itensPedidoDTO.add(itemPedidoMapper.toDto(itemPedidoRepository.save(itemPedido)));
             }
-            var pedidoDTO = mapper.toDto(pedidoSalvo);
-            pedidoDTO.getItens().addAll(itensPedidoDTO);
-            pedidoProducer.send(pedidoDTO.getItens());
+
+            pedidoSalvo.setValorTotal(valorTotal);
+            pedidoSalvo.setStatus(StatusPedido.EM_PROCESSAMENTO);
+            pedidoSalvo.setItens(itensPedido);
+            var pedidoDTO = mapper.toDto(repository.save(pedidoSalvo));
+            pedidoDTO.setItens(itensPedidoDTO);
+            itensPedidoDTO.forEach(pedidoProducer::send);
 
             return pedidoDTO;
         } catch(Exception e) {
@@ -120,7 +153,6 @@ public class PedidoServiceImpl implements PedidoService{
         var produto = buscarProduto(form.getUuidProduto());
         validator.validarQtdProduto(produto.getQuantidade(), form.getQuantidade());
         var itemPedido = itemPedidoMapper.toModel(form);
-        itemPedido.setUuidProdutoExterno(produto.getUuid());
         itemPedido.setSubtotal(produto.getPrecoVenda().multiply(BigDecimal.valueOf(form.getQuantidade())));
 
         return itemPedido;
