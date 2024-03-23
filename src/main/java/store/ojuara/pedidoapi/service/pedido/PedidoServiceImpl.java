@@ -64,36 +64,6 @@ public class PedidoServiceImpl implements PedidoService{
 
     /**TODO Implementar listagem por specification**/
 
-//    @Transactional
-//    @Override
-//    public PedidoDTO criarPedido(PedidoForm form) {
-//        try {
-//            var pedido = mapper.toModel(form);
-//            var valorTotal = BigDecimal.ZERO;
-//            List<ItemPedidoDTO> itensPedidoDTO = new ArrayList<>();
-//
-//            pedido.setValorTotal(valorTotal);
-//            pedido.setStatus(StatusPedido.EM_PROCESSAMENTO);
-//            var pedidoSalvo = repository.save(pedido);
-//
-//            for (ItemPedidoForm itemPedidoForm : form.getItens()) {
-//                var itemPedido = mapearItemPedido(itemPedidoForm);
-//                valorTotal = valorTotal.add(itemPedido.getSubtotal());
-//                itemPedido.setPedido(pedidoSalvo);
-//                itensPedidoDTO.add(itemPedidoMapper.toDto(itemPedido));
-//                itemPedidoRepository.save(itemPedido);
-//            }
-//            var pedidoDTO = mapper.toDto(pedidoSalvo);
-//            pedidoDTO.getItens().addAll(itensPedidoDTO);
-//            pedidoProducer.send(pedidoDTO.getItens());
-//
-//            return pedidoDTO;
-//        } catch(Exception e) {
-//            logger.error("Erro ao criar pedido: {}", e.getMessage());
-//            throw new PedidoException("Erro ao criar pedido");
-//        }
-//    }
-
     @Transactional
     @Override
     public PedidoDTO criarPedido(PedidoForm form) {
