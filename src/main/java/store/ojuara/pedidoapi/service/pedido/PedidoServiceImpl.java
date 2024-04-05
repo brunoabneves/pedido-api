@@ -80,7 +80,6 @@ public class PedidoServiceImpl implements PedidoService{
                 itemPedido.setPedido(pedidoSalvo);
                 itensPedidoDTO.add(itemPedidoMapper.toDto(itemPedido));
                 itensPedido.add(itemPedido);
-                //itensPedidoDTO.add(itemPedidoMapper.toDto(itemPedidoRepository.save(itemPedido)));
             }
 
             pedidoSalvo.setValorTotal(valorTotal);
@@ -93,7 +92,7 @@ public class PedidoServiceImpl implements PedidoService{
             return pedidoDTO;
         } catch(Exception e) {
             logger.error("Erro ao criar pedido: {}", e.getMessage());
-            throw new PedidoException("Erro ao criar pedido");
+            throw new PedidoException("Erro ao criar pedido: " + e.getMessage());
         }
     }
 
