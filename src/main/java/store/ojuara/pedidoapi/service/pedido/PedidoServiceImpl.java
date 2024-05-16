@@ -20,7 +20,6 @@ import store.ojuara.pedidoapi.domain.model.Pedido;
 import store.ojuara.pedidoapi.kafka.PedidoProducerImpl;
 import store.ojuara.pedidoapi.mapper.ItemPedidoMapper;
 import store.ojuara.pedidoapi.mapper.PedidoMapper;
-import store.ojuara.pedidoapi.repository.ItemPedidoRepository;
 import store.ojuara.pedidoapi.repository.PedidoRepository;
 import store.ojuara.pedidoapi.service.validator.PedidoValidator;
 import store.ojuara.pedidoapi.shared.exception.PedidoException;
@@ -41,7 +40,6 @@ public class PedidoServiceImpl implements PedidoService{
     private final ProdutoClient client;
     private final PedidoProducerImpl pedidoProducer;
     private final ItemPedidoMapper itemPedidoMapper;
-    private final ItemPedidoRepository itemPedidoRepository;
 
     private static final Logger logger = LoggerFactory.getLogger(PedidoServiceImpl.class);
 
@@ -87,7 +85,7 @@ public class PedidoServiceImpl implements PedidoService{
             pedidoSalvo.setItens(itensPedido);
             var pedidoDTO = mapper.toDto(repository.save(pedidoSalvo));
             pedidoDTO.setItens(itensPedidoDTO);
-            itensPedidoDTO.forEach(pedidoProducer::send);
+            itensPedidoDTO.forEach(dto -> pedidoProducer.send(dto.toAvro(dto)));
 
             return pedidoDTO;
         } catch(Exception e) {

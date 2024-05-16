@@ -11,7 +11,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
-import store.ojuara.avro.pedidorealizado.ItemPedidoAvro;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -34,7 +33,7 @@ public class KafkaProducerConfig {
     }
 
     @Bean
-    public ProducerFactory<String, ItemPedidoAvro> producerFactory() {
+    public ProducerFactory<Object, Object> producerFactory() {
         Map<String, Object> configProps = new HashMap<>();
         configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
         configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
@@ -47,7 +46,7 @@ public class KafkaProducerConfig {
     }
 
     @Bean
-    public KafkaTemplate<String, ItemPedidoAvro> kafkaTemplate() {
+    public KafkaTemplate<Object, Object> kafkaTemplate() {
         return new KafkaTemplate<>(producerFactory());
     }
 }
