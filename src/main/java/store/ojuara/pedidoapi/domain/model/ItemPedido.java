@@ -6,8 +6,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import java.math.BigDecimal;
 import java.util.UUID;
 
@@ -17,10 +15,6 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ItemPedido  extends ModeloGenerico {
-
-    @ManyToOne
-    @JoinColumn(name = "pedido_id")
-    private Pedido pedido;
     private UUID uuidProduto;
     private int quantidade;
     private BigDecimal subtotal;

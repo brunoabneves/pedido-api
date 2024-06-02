@@ -11,7 +11,6 @@ import store.ojuara.pedidoapi.domain.model.ItemPedido;
 public interface ItemPedidoMapper extends EntityMapper<ItemPedidoDTO, ItemPedido, ItemPedidoForm>{
 
     @Mappings({
-            @Mapping(target = "idPedido", source = "pedido.id"),
             @Mapping(target = "uuidProduto", source = "uuidProduto")
     })
     ItemPedidoDTO toDto(ItemPedido entity);
