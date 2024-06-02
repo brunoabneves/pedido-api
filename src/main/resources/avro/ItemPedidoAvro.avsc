@@ -4,11 +4,6 @@
   "namespace":"store.ojuara.avro.pedidorealizado",
   "fields": [
     {
-      "name":"idPedido",
-      "type":"int",
-      "default": -1
-    },
-    {
       "name":"uuidProduto",
       "type":"string",
       "default": ""

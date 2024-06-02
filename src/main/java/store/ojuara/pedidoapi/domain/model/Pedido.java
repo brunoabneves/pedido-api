@@ -11,7 +11,6 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @Entity
 @Getter
@@ -34,6 +33,7 @@ public class Pedido extends ModeloGenerico{
     @JoinColumn(name = "cliente_id")
     private Cliente cliente;
 
-    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)
+    @OneToMany
+    @JoinColumn(name = "pedido_id")
     private List<ItemPedido> itens = new ArrayList<>();
 }

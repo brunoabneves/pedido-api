@@ -15,14 +15,12 @@ import java.util.UUID;
 @AllArgsConstructor
 public class ItemPedidoDTO {
 
-    private Long idPedido;
     private UUID uuidProduto;
     private int quantidade;
     private BigDecimal subtotal;
 
     public ItemPedidoAvro toAvro(ItemPedidoDTO dto) {
         ItemPedidoAvro itemPedidoAvro = ItemPedidoAvro.newBuilder().build();
-        itemPedidoAvro.setIdPedido((dto.getIdPedido().intValue()));
         itemPedidoAvro.setUuidProduto(dto.getUuidProduto().toString());
         itemPedidoAvro.setQuantidade(dto.getQuantidade());
         itemPedidoAvro.setSubtotal(dto.getSubtotal().toString());

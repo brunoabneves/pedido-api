@@ -14,10 +14,10 @@ import org.apache.avro.message.SchemaStore;
 
 @org.apache.avro.specific.AvroGenerated
 public class ItemPedidoAvro extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = -6900093091983093925L;
+  private static final long serialVersionUID = -8835463961800921651L;
 
 
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"ItemPedidoAvro\",\"namespace\":\"store.ojuara.avro.pedidorealizado\",\"fields\":[{\"name\":\"idPedido\",\"type\":\"int\",\"default\":-1},{\"name\":\"uuidProduto\",\"type\":\"string\",\"default\":\"\"},{\"name\":\"quantidade\",\"type\":\"int\",\"default\":-1},{\"name\":\"subtotal\",\"type\":\"string\",\"default\":\"\"}]}");
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"ItemPedidoAvro\",\"namespace\":\"store.ojuara.avro.pedidorealizado\",\"fields\":[{\"name\":\"uuidProduto\",\"type\":\"string\",\"default\":\"\"},{\"name\":\"quantidade\",\"type\":\"int\",\"default\":-1},{\"name\":\"subtotal\",\"type\":\"string\",\"default\":\"\"}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
   private static final SpecificData MODEL$ = new SpecificData();
@@ -73,7 +73,6 @@ public class ItemPedidoAvro extends org.apache.avro.specific.SpecificRecordBase 
     return DECODER.decode(b);
   }
 
-  private int idPedido;
   private java.lang.CharSequence uuidProduto;
   private int quantidade;
   private java.lang.CharSequence subtotal;
@@ -87,13 +86,11 @@ public class ItemPedidoAvro extends org.apache.avro.specific.SpecificRecordBase 
 
   /**
    * All-args constructor.
-   * @param idPedido The new value for idPedido
    * @param uuidProduto The new value for uuidProduto
    * @param quantidade The new value for quantidade
    * @param subtotal The new value for subtotal
    */
-  public ItemPedidoAvro(java.lang.Integer idPedido, java.lang.CharSequence uuidProduto, java.lang.Integer quantidade, java.lang.CharSequence subtotal) {
-    this.idPedido = idPedido;
+  public ItemPedidoAvro(java.lang.CharSequence uuidProduto, java.lang.Integer quantidade, java.lang.CharSequence subtotal) {
     this.uuidProduto = uuidProduto;
     this.quantidade = quantidade;
     this.subtotal = subtotal;
@@ -104,10 +101,9 @@ public class ItemPedidoAvro extends org.apache.avro.specific.SpecificRecordBase 
   // Used by DatumWriter.  Applications should not call.
   public java.lang.Object get(int field$) {
     switch (field$) {
-    case 0: return idPedido;
-    case 1: return uuidProduto;
-    case 2: return quantidade;
-    case 3: return subtotal;
+    case 0: return uuidProduto;
+    case 1: return quantidade;
+    case 2: return subtotal;
     default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
   }
@@ -116,29 +112,11 @@ public class ItemPedidoAvro extends org.apache.avro.specific.SpecificRecordBase 
   @SuppressWarnings(value="unchecked")
   public void put(int field$, java.lang.Object value$) {
     switch (field$) {
-    case 0: idPedido = (java.lang.Integer)value$; break;
-    case 1: uuidProduto = (java.lang.CharSequence)value$; break;
-    case 2: quantidade = (java.lang.Integer)value$; break;
-    case 3: subtotal = (java.lang.CharSequence)value$; break;
+    case 0: uuidProduto = (java.lang.CharSequence)value$; break;
+    case 1: quantidade = (java.lang.Integer)value$; break;
+    case 2: subtotal = (java.lang.CharSequence)value$; break;
     default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
-  }
-
-  /**
-   * Gets the value of the 'idPedido' field.
-   * @return The value of the 'idPedido' field.
-   */
-  public int getIdPedido() {
-    return idPedido;
-  }
-
-
-  /**
-   * Sets the value of the 'idPedido' field.
-   * @param value the value to set.
-   */
-  public void setIdPedido(int value) {
-    this.idPedido = value;
   }
 
   /**
@@ -233,7 +211,6 @@ public class ItemPedidoAvro extends org.apache.avro.specific.SpecificRecordBase 
   public static class Builder extends org.apache.avro.specific.SpecificRecordBuilderBase<ItemPedidoAvro>
     implements org.apache.avro.data.RecordBuilder<ItemPedidoAvro> {
 
-    private int idPedido;
     private java.lang.CharSequence uuidProduto;
     private int quantidade;
     private java.lang.CharSequence subtotal;
@@ -249,21 +226,17 @@ public class ItemPedidoAvro extends org.apache.avro.specific.SpecificRecordBase 
      */
     private Builder(store.ojuara.avro.pedidorealizado.ItemPedidoAvro.Builder other) {
       super(other);
-      if (isValidValue(fields()[0], other.idPedido)) {
-        this.idPedido = data().deepCopy(fields()[0].schema(), other.idPedido);
+      if (isValidValue(fields()[0], other.uuidProduto)) {
+        this.uuidProduto = data().deepCopy(fields()[0].schema(), other.uuidProduto);
         fieldSetFlags()[0] = other.fieldSetFlags()[0];
       }
-      if (isValidValue(fields()[1], other.uuidProduto)) {
-        this.uuidProduto = data().deepCopy(fields()[1].schema(), other.uuidProduto);
+      if (isValidValue(fields()[1], other.quantidade)) {
+        this.quantidade = data().deepCopy(fields()[1].schema(), other.quantidade);
         fieldSetFlags()[1] = other.fieldSetFlags()[1];
       }
-      if (isValidValue(fields()[2], other.quantidade)) {
-        this.quantidade = data().deepCopy(fields()[2].schema(), other.quantidade);
+      if (isValidValue(fields()[2], other.subtotal)) {
+        this.subtotal = data().deepCopy(fields()[2].schema(), other.subtotal);
         fieldSetFlags()[2] = other.fieldSetFlags()[2];
-      }
-      if (isValidValue(fields()[3], other.subtotal)) {
-        this.subtotal = data().deepCopy(fields()[3].schema(), other.subtotal);
-        fieldSetFlags()[3] = other.fieldSetFlags()[3];
       }
     }
 
@@ -273,61 +246,18 @@ public class ItemPedidoAvro extends org.apache.avro.specific.SpecificRecordBase 
      */
     private Builder(store.ojuara.avro.pedidorealizado.ItemPedidoAvro other) {
       super(SCHEMA$, MODEL$);
-      if (isValidValue(fields()[0], other.idPedido)) {
-        this.idPedido = data().deepCopy(fields()[0].schema(), other.idPedido);
+      if (isValidValue(fields()[0], other.uuidProduto)) {
+        this.uuidProduto = data().deepCopy(fields()[0].schema(), other.uuidProduto);
         fieldSetFlags()[0] = true;
       }
-      if (isValidValue(fields()[1], other.uuidProduto)) {
-        this.uuidProduto = data().deepCopy(fields()[1].schema(), other.uuidProduto);
+      if (isValidValue(fields()[1], other.quantidade)) {
+        this.quantidade = data().deepCopy(fields()[1].schema(), other.quantidade);
         fieldSetFlags()[1] = true;
       }
-      if (isValidValue(fields()[2], other.quantidade)) {
-        this.quantidade = data().deepCopy(fields()[2].schema(), other.quantidade);
+      if (isValidValue(fields()[2], other.subtotal)) {
+        this.subtotal = data().deepCopy(fields()[2].schema(), other.subtotal);
         fieldSetFlags()[2] = true;
       }
-      if (isValidValue(fields()[3], other.subtotal)) {
-        this.subtotal = data().deepCopy(fields()[3].schema(), other.subtotal);
-        fieldSetFlags()[3] = true;
-      }
-    }
-
-    /**
-      * Gets the value of the 'idPedido' field.
-      * @return The value.
-      */
-    public int getIdPedido() {
-      return idPedido;
-    }
-
-
-    /**
-      * Sets the value of the 'idPedido' field.
-      * @param value The value of 'idPedido'.
-      * @return This builder.
-      */
-    public store.ojuara.avro.pedidorealizado.ItemPedidoAvro.Builder setIdPedido(int value) {
-      validate(fields()[0], value);
-      this.idPedido = value;
-      fieldSetFlags()[0] = true;
-      return this;
-    }
-
-    /**
-      * Checks whether the 'idPedido' field has been set.
-      * @return True if the 'idPedido' field has been set, false otherwise.
-      */
-    public boolean hasIdPedido() {
-      return fieldSetFlags()[0];
-    }
-
-
-    /**
-      * Clears the value of the 'idPedido' field.
-      * @return This builder.
-      */
-    public store.ojuara.avro.pedidorealizado.ItemPedidoAvro.Builder clearIdPedido() {
-      fieldSetFlags()[0] = false;
-      return this;
     }
 
     /**
@@ -345,9 +275,9 @@ public class ItemPedidoAvro extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public store.ojuara.avro.pedidorealizado.ItemPedidoAvro.Builder setUuidProduto(java.lang.CharSequence value) {
-      validate(fields()[1], value);
+      validate(fields()[0], value);
       this.uuidProduto = value;
-      fieldSetFlags()[1] = true;
+      fieldSetFlags()[0] = true;
       return this;
     }
 
@@ -356,7 +286,7 @@ public class ItemPedidoAvro extends org.apache.avro.specific.SpecificRecordBase 
       * @return True if the 'uuidProduto' field has been set, false otherwise.
       */
     public boolean hasUuidProduto() {
-      return fieldSetFlags()[1];
+      return fieldSetFlags()[0];
     }
 
 
@@ -366,7 +296,7 @@ public class ItemPedidoAvro extends org.apache.avro.specific.SpecificRecordBase 
       */
     public store.ojuara.avro.pedidorealizado.ItemPedidoAvro.Builder clearUuidProduto() {
       uuidProduto = null;
-      fieldSetFlags()[1] = false;
+      fieldSetFlags()[0] = false;
       return this;
     }
 
@@ -385,9 +315,9 @@ public class ItemPedidoAvro extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public store.ojuara.avro.pedidorealizado.ItemPedidoAvro.Builder setQuantidade(int value) {
-      validate(fields()[2], value);
+      validate(fields()[1], value);
       this.quantidade = value;
-      fieldSetFlags()[2] = true;
+      fieldSetFlags()[1] = true;
       return this;
     }
 
@@ -396,7 +326,7 @@ public class ItemPedidoAvro extends org.apache.avro.specific.SpecificRecordBase 
       * @return True if the 'quantidade' field has been set, false otherwise.
       */
     public boolean hasQuantidade() {
-      return fieldSetFlags()[2];
+      return fieldSetFlags()[1];
     }
 
 
@@ -405,7 +335,7 @@ public class ItemPedidoAvro extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public store.ojuara.avro.pedidorealizado.ItemPedidoAvro.Builder clearQuantidade() {
-      fieldSetFlags()[2] = false;
+      fieldSetFlags()[1] = false;
       return this;
     }
 
@@ -424,9 +354,9 @@ public class ItemPedidoAvro extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public store.ojuara.avro.pedidorealizado.ItemPedidoAvro.Builder setSubtotal(java.lang.CharSequence value) {
-      validate(fields()[3], value);
+      validate(fields()[2], value);
       this.subtotal = value;
-      fieldSetFlags()[3] = true;
+      fieldSetFlags()[2] = true;
       return this;
     }
 
@@ -435,7 +365,7 @@ public class ItemPedidoAvro extends org.apache.avro.specific.SpecificRecordBase 
       * @return True if the 'subtotal' field has been set, false otherwise.
       */
     public boolean hasSubtotal() {
-      return fieldSetFlags()[3];
+      return fieldSetFlags()[2];
     }
 
 
@@ -445,7 +375,7 @@ public class ItemPedidoAvro extends org.apache.avro.specific.SpecificRecordBase 
       */
     public store.ojuara.avro.pedidorealizado.ItemPedidoAvro.Builder clearSubtotal() {
       subtotal = null;
-      fieldSetFlags()[3] = false;
+      fieldSetFlags()[2] = false;
       return this;
     }
 
@@ -454,10 +384,9 @@ public class ItemPedidoAvro extends org.apache.avro.specific.SpecificRecordBase 
     public ItemPedidoAvro build() {
       try {
         ItemPedidoAvro record = new ItemPedidoAvro();
-        record.idPedido = fieldSetFlags()[0] ? this.idPedido : (java.lang.Integer) defaultValue(fields()[0]);
-        record.uuidProduto = fieldSetFlags()[1] ? this.uuidProduto : (java.lang.CharSequence) defaultValue(fields()[1]);
-        record.quantidade = fieldSetFlags()[2] ? this.quantidade : (java.lang.Integer) defaultValue(fields()[2]);
-        record.subtotal = fieldSetFlags()[3] ? this.subtotal : (java.lang.CharSequence) defaultValue(fields()[3]);
+        record.uuidProduto = fieldSetFlags()[0] ? this.uuidProduto : (java.lang.CharSequence) defaultValue(fields()[0]);
+        record.quantidade = fieldSetFlags()[1] ? this.quantidade : (java.lang.Integer) defaultValue(fields()[1]);
+        record.subtotal = fieldSetFlags()[2] ? this.subtotal : (java.lang.CharSequence) defaultValue(fields()[2]);
         return record;
       } catch (org.apache.avro.AvroMissingFieldException e) {
         throw e;
@@ -490,8 +419,6 @@ public class ItemPedidoAvro extends org.apache.avro.specific.SpecificRecordBase 
   @Override public void customEncode(org.apache.avro.io.Encoder out)
     throws java.io.IOException
   {
-    out.writeInt(this.idPedido);
-
     out.writeString(this.uuidProduto);
 
     out.writeInt(this.quantidade);
@@ -505,8 +432,6 @@ public class ItemPedidoAvro extends org.apache.avro.specific.SpecificRecordBase 
   {
     org.apache.avro.Schema.Field[] fieldOrder = in.readFieldOrderIfDiff();
     if (fieldOrder == null) {
-      this.idPedido = in.readInt();
-
       this.uuidProduto = in.readString(this.uuidProduto instanceof Utf8 ? (Utf8)this.uuidProduto : null);
 
       this.quantidade = in.readInt();
@@ -514,21 +439,17 @@ public class ItemPedidoAvro extends org.apache.avro.specific.SpecificRecordBase 
       this.subtotal = in.readString(this.subtotal instanceof Utf8 ? (Utf8)this.subtotal : null);
 
     } else {
-      for (int i = 0; i < 4; i++) {
+      for (int i = 0; i < 3; i++) {
         switch (fieldOrder[i].pos()) {
         case 0:
-          this.idPedido = in.readInt();
-          break;
-
-        case 1:
           this.uuidProduto = in.readString(this.uuidProduto instanceof Utf8 ? (Utf8)this.uuidProduto : null);
           break;
 
-        case 2:
+        case 1:
           this.quantidade = in.readInt();
           break;
 
-        case 3:
+        case 2:
           this.subtotal = in.readString(this.subtotal instanceof Utf8 ? (Utf8)this.subtotal : null);
           break;
 
